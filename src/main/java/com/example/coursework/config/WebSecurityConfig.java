@@ -1,7 +1,8 @@
 package com.example.coursework.config;
 
-import com.example.coursework.service.UserServiceImp;
+import com.example.coursework.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +15,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserServiceImp userService;
+    @Qualifier("UserServiceImpl")
+    private UserService userService;
 
 
     @Override

@@ -16,7 +16,7 @@ import java.util.Optional;
 @Controller
 public class RegistrationController {
     @Autowired
-    @Qualifier("UserServiceImp")
+    @Qualifier("UserServiceImpl")
     private UserService userService;
 
     @GetMapping("/registration")
