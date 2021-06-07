@@ -4,6 +4,7 @@ import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
 import com.example.coursework.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Controller
 public class RegistrationController {
     @Autowired
+    @Qualifier("UserServiceImp")
     private UserService userService;
 
     @GetMapping("/registration")
