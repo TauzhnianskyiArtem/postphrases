@@ -3,9 +3,11 @@ package com.example.coursework.controller;
 import com.example.coursework.domain.Message;
 import com.example.coursework.domain.User;
 import com.example.coursework.service.MessageService;
+import com.example.coursework.userdaetails.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,12 +43,11 @@ public class MainController {
 
     @PostMapping("/main")
     public String add(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal MyUserDetails userDetails,
             @RequestParam String text,
             @RequestParam String tag, Model model
     ) {
-
-        Message message = new Message(text, tag, user);
+        Message message = new Message(text, tag, userDetails.getUser());
         messageService.add(message);
 
         Iterable<Message> messages = messageService.selectAll();

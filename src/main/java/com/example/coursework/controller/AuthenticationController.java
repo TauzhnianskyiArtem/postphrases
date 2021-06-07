@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AuthenticationController {
 
-    @Autowired
-    UserServiceImp userServiceImp;
-
     @GetMapping("/login")
     public String login() {
        return "login";

@@ -12,19 +12,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service("UserServiceImp")
-public class UserServiceImp implements UserDetailsService, UserService {
+public class UserServiceImp implements UserService {
     @Autowired
     private UserRepo userRepo;
 
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepo.findByUsername(username);
-        user.orElseThrow( () -> new  UsernameNotFoundException("User " + username + " dont exist!"));
-
-        return user.map(MyUserDetails::new).get();
-
+        return new MyUserDetails(user.get());
     }
-
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepo.findByUsername(username);

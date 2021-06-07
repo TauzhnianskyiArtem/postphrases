@@ -1,40 +1,32 @@
 package com.example.coursework.userdaetails;
 
-import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class MyUserDetails implements UserDetails {
 
-    private String username;
-    private String password;
-    private boolean active;
-    private Set<Role> roles;
+    private User user;
 
     public MyUserDetails(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.active = user.isActive();
-        this.roles = user.getRoles();
+        this.user= user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return this.user.getRoles();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return this.user.getUsername();
     }
 
     @Override
@@ -54,6 +46,10 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return this.user.isActive();
+    }
+
+    public User getUser() {
+        return user;
     }
 }
