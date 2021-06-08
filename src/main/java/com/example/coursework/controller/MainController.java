@@ -19,7 +19,6 @@ import java.util.Map;
 @Controller
 public class MainController {
     @Autowired
-    @Qualifier("MessageServiceImp")
     private MessageService messageService;
 
 
