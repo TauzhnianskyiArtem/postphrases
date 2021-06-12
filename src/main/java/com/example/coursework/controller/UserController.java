@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,7 +24,8 @@ public class UserController {
 
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userService.findAll());
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
 
         return "userList";
     }
@@ -51,7 +53,6 @@ public class UserController {
         user.getRoles().clear();
 
         for (String key : form.keySet()) {
-            System.out.println(key + " " + form.get(key));
             if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
