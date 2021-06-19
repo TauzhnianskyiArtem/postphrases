@@ -1,6 +1,7 @@
 package com.example.coursework.domain;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,6 +24,5 @@ public class User {
     @CollectionTable( name = "user_role", joinColumns = @JoinColumn( name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-
 
 }

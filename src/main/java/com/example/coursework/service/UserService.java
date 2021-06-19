@@ -12,4 +12,6 @@ public interface UserService extends UserDetailsService {
     void add(User user);
 
     List<User> findAll();
+
+    void save(User user);
 }
