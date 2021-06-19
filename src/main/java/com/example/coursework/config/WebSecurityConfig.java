@@ -1,8 +1,9 @@
 package com.example.coursework.config;
 
+import com.example.coursework.oauth.OAuth2LoginSuccessHandler;
+import com.example.coursework.service.UserOAuth2UserService;
 import com.example.coursework.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,21 +20,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserOAuth2UserService oauthUserService;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler successHandler;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/login","/static/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/registration", "/login","/static/**", "/login/google").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                    .formLogin().loginPage("/login").permitAll()
                 .and()
-                .logout()
-                .permitAll();;
+                    .oauth2Login()
+                    .loginPage("/login")
+                    .userInfoEndpoint()
+                        .userService(oauthUserService)
+                        .and()
+                        .successHandler(successHandler)
+                .and()
+                    .logout().permitAll();
+                
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

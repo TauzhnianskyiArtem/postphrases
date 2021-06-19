@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service("UserServiceImpl")
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
@@ -34,5 +34,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public void save(User user) {
+        userRepo.save(user);
     }
 }
