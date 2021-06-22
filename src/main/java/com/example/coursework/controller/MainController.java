@@ -2,9 +2,9 @@ package com.example.coursework.controller;
 
 import com.example.coursework.domain.Message;
 import com.example.coursework.domain.User;
-import com.example.coursework.service.MessageService;
 import com.example.coursework.oauth.UserOAuth2User;
-import com.example.coursework.service.UserService;
+import com.example.coursework.service.interf.MessageService;
+import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -59,6 +58,7 @@ public class MainController {
             @RequestParam("file") MultipartFile file,
             Model model
     ) {
+
         User user = null;
         if (userDetails == null){
             user = userService.findByUsername(userOAuth.getName()).get();
@@ -81,7 +81,7 @@ public class MainController {
 
             message.setFileName(resultFilename);
         }
-        messageService.add(message);
+        messageService.save(message);
 
         Iterable<Message> messages = messageService.selectAll();
 

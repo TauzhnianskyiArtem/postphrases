@@ -1,4 +1,4 @@
-package com.example.coursework.service;
+package com.example.coursework.service.interf;
 
 import com.example.coursework.domain.Message;
 
@@ -7,5 +7,5 @@ public interface MessageService {
 
     Iterable<Message> findByTag(String filter);
 
-    void add(Message message);
+    void save(Message message);
 }

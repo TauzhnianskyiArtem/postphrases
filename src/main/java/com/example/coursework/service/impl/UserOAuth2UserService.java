@@ -1,4 +1,4 @@
-package com.example.coursework.service;
+package com.example.coursework.service.impl;
 
 import com.example.coursework.oauth.UserOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

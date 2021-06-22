@@ -1,7 +1,8 @@
-package com.example.coursework.service;
+package com.example.coursework.service.impl;
 
 import com.example.coursework.domain.Message;
 import com.example.coursework.repos.MessageRepo;
+import com.example.coursework.service.interf.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void add(Message message) {
+    public void save(Message message) {
         messageRepo.save(message);
     }
 }

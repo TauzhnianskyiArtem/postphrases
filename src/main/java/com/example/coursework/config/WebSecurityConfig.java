@@ -1,8 +1,8 @@
 package com.example.coursework.config;
 
 import com.example.coursework.oauth.OAuth2LoginSuccessHandler;
-import com.example.coursework.service.UserOAuth2UserService;
-import com.example.coursework.service.UserService;
+import com.example.coursework.service.impl.UserOAuth2UserService;
+import com.example.coursework.service.interf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/registration", "/login","/static/**", "/login/google").permitAll()
+                    .antMatchers("/", "/registration", "/login","/static/**", "/activate/*").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/login").permitAll()

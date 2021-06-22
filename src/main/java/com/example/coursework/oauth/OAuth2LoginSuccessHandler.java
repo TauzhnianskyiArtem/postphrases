@@ -2,7 +2,7 @@ package com.example.coursework.oauth;
 
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
-import com.example.coursework.service.UserService;
+import com.example.coursework.service.interf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -19,23 +19,24 @@ import java.util.Optional;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Autowired
     private UserService userService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserOAuth2User principal = (UserOAuth2User) authentication.getPrincipal();
-        String username = principal.getName();
-        Optional<User> userByDB = userService.findByUsername(username);
-        if (!userByDB.isPresent()){
+        String email = principal.getEmail();
+        Optional<User> userByDB = userService.findByEmail(email);
+        if (userByDB.isPresent()) {
+
+            String username = principal.getName();
+
             User user = new User();
             user.setUsername(username);
+            user.setEmail(email);
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
             userService.save(user);
-        } else {
-            User user = userByDB.get();
-            user.setUsername(username);
-            userService.save(user);
         }
 
-        super.onAuthenticationSuccess(request,response,authentication);
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 }
