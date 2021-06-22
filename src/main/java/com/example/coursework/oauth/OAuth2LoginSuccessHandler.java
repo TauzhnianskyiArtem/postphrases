@@ -25,7 +25,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         UserOAuth2User principal = (UserOAuth2User) authentication.getPrincipal();
         String email = principal.getEmail();
         Optional<User> userByDB = userService.findByEmail(email);
-        if (userByDB.isPresent()) {
+        if (!userByDB.isPresent()) {
 
             String username = principal.getName();
 
