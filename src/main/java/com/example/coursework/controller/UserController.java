@@ -2,7 +2,7 @@ package com.example.coursework.controller;
 
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
-import com.example.coursework.service.UserService;
+import com.example.coursework.service.interf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -58,7 +58,7 @@ public class UserController {
             }
         }
 
-        userService.add(user);
+        userService.save(user);
 
         return "redirect:/user";
     }

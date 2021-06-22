@@ -3,6 +3,7 @@ package com.example.coursework.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @Data
+@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
@@ -17,7 +19,8 @@ public class User {
     private String username;
     private String password;
     private boolean active;
-
+    private String email;
+    private String activationCode;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
