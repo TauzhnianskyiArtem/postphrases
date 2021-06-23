@@ -33,12 +33,12 @@ public class MainController {
     private String uploadPath;
 
     @GetMapping("/")
-    public String greeting( Map<String, Object> model) {
+    public String greeting(Map<String, Object> model) {
         return "greeting";
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam( required = false) String filter, Model model) {
+    public String main(@RequestParam(required = false) String filter, Model model) {
         Iterable<Message> messages = messageService.selectAll();
         if (filter != null && !filter.isEmpty()) {
             messages = messageService.findByTag(filter);
@@ -60,9 +60,9 @@ public class MainController {
     ) {
 
         User user = null;
-        if (userDetails == null){
+        if (userDetails == null) {
             user = userService.findByEmail(userOAuth.getEmail()).get();
-        }else {
+        } else {
             user = userDetails.getUser();
         }
         Message message = new Message(text, tag, user);
