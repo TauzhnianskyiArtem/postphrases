@@ -61,7 +61,7 @@ public class MainController {
 
         User user = null;
         if (userDetails == null){
-            user = userService.findByUsername(userOAuth.getName()).get();
+            user = userService.findByEmail(userOAuth.getEmail()).get();
         }else {
             user = userDetails.getUser();
         }
