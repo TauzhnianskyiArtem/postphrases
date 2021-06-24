@@ -2,7 +2,6 @@ package com.example.coursework.controller;
 
 import com.example.coursework.domain.Message;
 import com.example.coursework.domain.User;
-import com.example.coursework.oauth.UserOAuth2User;
 import com.example.coursework.service.interf.MessageService;
 import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
@@ -38,13 +37,20 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false) String filter, Model model) {
+    public String main(
+            @AuthenticationPrincipal MyUserDetails userDetails,
+            @RequestParam(required = false) String filter,
+            Model model) {
+
+        User user = userDetails.getUser();
+
         Iterable<Message> messages = messageService.selectAll();
         if (filter != null && !filter.isEmpty()) {
             messages = messageService.findByTag(filter);
         }
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
+        model.addAttribute("user", user);
         return "main";
     }
 
@@ -52,19 +58,13 @@ public class MainController {
     @PostMapping("/main")
     public String add(
             @AuthenticationPrincipal MyUserDetails userDetails,
-            @AuthenticationPrincipal UserOAuth2User userOAuth,
             @RequestParam String text,
             @RequestParam String tag,
             @RequestParam("file") MultipartFile file,
             Model model
     ) {
 
-        User user = null;
-        if (userDetails == null) {
-            user = userService.findByEmail(userOAuth.getEmail()).get();
-        } else {
-            user = userDetails.getUser();
-        }
+        User user = userDetails.getUser();
         Message message = new Message(text, tag, user);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
@@ -83,11 +83,7 @@ public class MainController {
         }
         messageService.save(message);
 
-        Iterable<Message> messages = messageService.selectAll();
-
-        model.addAttribute("messages", messages);
-
-        return "main";
+        return "redirect:/main";
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.coursework.oauth;
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
 import com.example.coursework.service.interf.UserService;
+import com.example.coursework.userdaetails.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -22,7 +23,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        UserOAuth2User principal = (UserOAuth2User) authentication.getPrincipal();
+        MyUserDetails principal = (MyUserDetails) authentication.getPrincipal();
         String email = principal.getEmail();
         Optional<User> userByDB = userService.findByEmail(email);
         if (!userByDB.isPresent()) {

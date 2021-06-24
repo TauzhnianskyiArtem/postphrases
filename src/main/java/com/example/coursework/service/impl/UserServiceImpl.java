@@ -6,11 +6,10 @@ import com.example.coursework.repos.UserRepo;
 import com.example.coursework.service.interf.MailSender;
 import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,10 +24,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailSender mailSender;
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.findByUsername(username);
-        return new MyUserDetails(user.get());
-    }
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepo.findByUsername(username);

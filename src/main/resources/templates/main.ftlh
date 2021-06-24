@@ -4,7 +4,8 @@
 <@c.page>
     <div>
         <@l.logout />
-        <span><a href="/user">User list</a></span>
+        <span><a href="/user">User list</a></span><br>
+        <span><a href="/profile">My Profile</a></span>
     </div>
     <div>
         <form method="post" enctype="multipart/form-data">

@@ -1,8 +1,7 @@
 package com.example.coursework.config;
 
 import com.example.coursework.oauth.OAuth2LoginSuccessHandler;
-import com.example.coursework.service.impl.UserOAuth2UserService;
-import com.example.coursework.service.interf.UserService;
+import com.example.coursework.service.impl.AuthenticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,10 +17,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserOAuth2UserService oauthUserService;
+    private AuthenticServiceImpl authenticService;
 
     @Autowired
     private OAuth2LoginSuccessHandler successHandler;
@@ -39,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .oauth2Login()
                     .loginPage("/login")
                     .userInfoEndpoint()
-                        .userService(oauthUserService)
+                        .userService(authenticService)
                         .and()
                         .successHandler(successHandler)
                 .and()
@@ -50,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService)
+        auth.userDetailsService(authenticService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
