@@ -23,7 +23,7 @@ public class ProfileController {
     public String profileUser(
             @AuthenticationPrincipal MyUserDetails userDetails,
             Model model
-    ){
+    ) {
         User user = userDetails.getUser();
 
         model.addAttribute("user", user);
@@ -34,22 +34,12 @@ public class ProfileController {
     public String changeUser(
             @RequestParam("userId") User user,
             @RequestParam String email,
-            @RequestParam String username,
             @RequestParam String password,
             Model model
-    ){
-        if (email.isEmpty() || username.isEmpty() || password.isEmpty()){
-            model.addAttribute("message", "Required fields are empty");
-        } else {
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(password);
+    ) {
+        String message = userService.updateProfile(user, password, email);
 
-            userService.save(user);
-
-            model.addAttribute("message", "Changes saved");
-        }
-
+        model.addAttribute("message", message);
         model.addAttribute("user", user);
         return "profile";
     }

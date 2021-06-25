@@ -17,5 +17,7 @@ public interface UserService {
 
     boolean activateUser(String code);
 
+    String updateProfile(User user, String password, String email);
+
     Optional<User> findByEmail(String email);
 }

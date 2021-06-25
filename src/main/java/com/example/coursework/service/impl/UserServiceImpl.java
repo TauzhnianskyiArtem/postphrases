@@ -4,12 +4,11 @@ import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
 import com.example.coursework.repos.UserRepo;
 import com.example.coursework.service.interf.MailSender;
+import com.example.coursework.service.interf.SendingService;
 import com.example.coursework.service.interf.UserService;
-import com.example.coursework.userdaetails.MyUserDetails;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
 
     @Autowired
-    private MailSender mailSender;
+    private SendingService sendingService;
 
     @Override
     public Optional<User> findByUsername(String username) {
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        Optional<User> userFromDb = userRepo.findByEmail(user.getEmail());
+        Optional<User> userFromDb = userRepo.findByUsername(user.getUsername());
 
         if (userFromDb.isPresent()) {
             return false;
@@ -53,16 +52,7 @@ public class UserServiceImpl implements UserService {
 
         userRepo.save(user);
 
-        if (!(user.getEmail()).isEmpty()) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to Postphrases. Please, visit next link: http://localhost:8080/activate/%s",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
-
-            mailSender.send(user.getEmail(), "Activation code", message);
-        }
+        sendingService.sendMessage(user);
 
         return true;
     }
@@ -82,8 +72,38 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    public String updateProfile(User user, String password, String email) {
+        String result = "";
+
+        String userEmail = user.getEmail();
+
+        if (password == null || password.isEmpty())
+            return "Password is empty";
+
+
+        if (email == null || email.isEmpty()){
+            return "Email is empty";
+        }
+
+        if (!email.equals(userEmail)) {
+            user.setEmail(email);
+            user.setPassword(password);
+
+            user.setActivationCode(UUID.randomUUID().toString());
+            sendingService.sendMessage(user);
+
+            result += "Changes save. Activation code sent to the email";
+            userRepo.save(user);
+        }
+
+
+
+        return result;
+    }
+
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
+
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -33,6 +34,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             User user = new User();
             user.setUsername(username);
             user.setEmail(email);
+            user.setPassword(UUID.randomUUID().toString());
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
             userService.save(user);
