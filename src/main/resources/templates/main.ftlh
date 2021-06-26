@@ -1,10 +1,16 @@
 <#import "parts/common.ftlh" as c>
 <#import "parts/login.ftlh" as l>
+<#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>
 
 <@c.page>
     <div>
+        <#include "parts/security.ftlh">
+        <h3>Hello, ${name}</h3>
         <@l.logout />
-        <span><a href="/user">User list</a></span><br>
+
+        <@sec.authorize access="hasAnyAuthority('ADMIN')">
+            <span><a href="/user">User list</a></span><br>
+        </@sec.authorize>
         <span><a href="/profile">My Profile</a></span>
     </div>
     <div>
@@ -18,15 +24,15 @@
     </div>
     <div>Список сообщений</div>
     <form method="get" action="/main">
-        <input type="text" name="filter" value="${filter?ifExists!""}">
+        <input type="text" name="filter" value="${filter?ifExists}">
         <button type="submit">Найти</button>
     </form>
     <#list messages as message>
         <div>
-            <b>${message.id!""}</b>
-            <span>${message.text!""}</span>
-            <i>${message.tag!""}</i>
-            <strong>${message.authorName!""}</strong>
+            <b>${message.id}</b>
+            <span>${message.text}</span>
+            <i>${message.tag}</i>
+            <strong>${message.authorName}</strong>
             <div>
                 <#if message.fileName??>
                     <img src="/img/${message.fileName}">

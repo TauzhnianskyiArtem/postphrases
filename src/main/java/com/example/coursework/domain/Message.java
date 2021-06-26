@@ -29,4 +29,8 @@ public class Message {
         this.tag = tag;
         this.author = author;
     }
+
+    public String getAuthorName(){
+        return this.author.getUsername();
+    }
 }

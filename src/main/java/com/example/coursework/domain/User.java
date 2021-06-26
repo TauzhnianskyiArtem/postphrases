@@ -28,4 +28,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    public boolean getAdmin(){
+        return roles.contains(Role.ADMIN);
+    }
 }

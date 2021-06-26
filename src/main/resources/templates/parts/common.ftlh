@@ -1,4 +1,6 @@
 <#macro page>
+
+<#include "security.ftlh">
     <!DOCTYPE html>
     <html lang="en">
     <head>
