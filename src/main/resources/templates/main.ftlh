@@ -1,24 +1,31 @@
-<#import "parts/common.ftlh" as c>
 <#import "parts/login.ftlh" as l>
-<#assign sec=JspTaglibs["http://www.springframework.org/security/tags"]/>
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"]/>
 
-<@c.page>
-    <div>
-        <#include "parts/security.ftlh">
-        <h3>Hello, ${name}</h3>
-        <@l.logout />
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Main</title>
+</head>
+<body>
+<div>
+    <@l.logout />
+    <h3>Hello, <@security.authentication property="principal.username"/></h3>
 
-        <@sec.authorize access="hasAnyAuthority('ADMIN')">
-            <span><a href="/user">User list</a></span><br>
-        </@sec.authorize>
-        <span><a href="/profile">My Profile</a></span>
-    </div>
+    <@security.authorize access="hasAnyAuthority('ADMIN')">
+        <span><a href="/user">User list</a></span><br>
+    </@security.authorize>
+    <span><a href="/profile">My Profile</a></span>
+</div>
     <div>
         <form method="post" enctype="multipart/form-data">
-            <input type="text" name="text" placeholder="Введите сообщение" />
+            <input type="text" name="text" placeholder="Введите сообщение"/>
             <input type="text" name="tag" placeholder="Тэг">
             <input type="file" name="file">
-            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit">Добавить</button>
         </form>
     </div>
@@ -42,4 +49,5 @@
     <#else>
         No message
     </#list>
-</@c.page>
+</body>
+</html>
