@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,9 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepo.findByUsername(username);
-        return new MyUserDetails(user.get());
+        user.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return user
+                .map(MyUserDetails::new).get();
     }
 
     @Override
@@ -35,7 +38,9 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
         OAuth2User auth2User =  super.loadUser(userRequest);
         String email = auth2User.getAttribute("email");
         Optional<User> user = userRepo.findByEmail(email);
-        return new MyUserDetails(user.get());
+
+        user.orElseThrow(() -> new OAuth2AuthenticationException(new OAuth2Error("unauthorized"), "Email not found"));
+        return user.map(MyUserDetails::new).get();
     }
 
 }

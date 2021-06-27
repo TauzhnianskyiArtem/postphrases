@@ -11,7 +11,9 @@
 </head>
 <body>
     Login page
-    <br><a href="/oauth2/authorization/google">Войти с помощью Google</a><br>
+    <br><a href="/oauth2/authorization/google">Login with Google</a><br>
+    <a href="/oauth2/authorization/facebook">Login with Facebook</a><br>
+    <a href="/oauth2/authorization/github">Login with GitHub</a><br>
     ${message?ifExists!""}
     <@l.login "/login" />
     <a href="/registration">Add new user</a>
