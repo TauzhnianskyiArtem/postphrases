@@ -79,27 +79,30 @@ public class UserServiceImpl implements UserService {
     public String updateProfile(User user, String password, String email) {
         String result = "";
 
+        boolean matches = passwordEncoder.matches(password, user.getPassword());
+
         String userEmail = user.getEmail();
-
-        if (password == null || password.isEmpty())
-            return "Password is empty";
-
 
         if (email == null || email.isEmpty()){
             return "Email is empty";
         }
 
+        if (password != null && !password.isEmpty()) {
+            String encodePassword = passwordEncoder.encode(password);
+            user.setPassword(encodePassword);
+            result = "Password save. ";
+        }
+
         if (!email.equals(userEmail)) {
             user.setEmail(email);
-            user.setPassword(password);
 
             user.setActivationCode(UUID.randomUUID().toString());
             sendingService.sendMessage(user);
 
-            result += "Changes save. Activation code sent to the email";
-            userRepo.save(user);
-        }
+            result += "Email save. Activation code sent to the email";
 
+        }
+        userRepo.save(user);
 
 
         return result;
