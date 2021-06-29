@@ -3,13 +3,12 @@ package com.example.coursework.service.impl;
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
 import com.example.coursework.repos.UserRepo;
-import com.example.coursework.service.interf.MailSender;
 import com.example.coursework.service.interf.SendingService;
 import com.example.coursework.service.interf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +23,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SendingService sendingService;
 
+    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 
