@@ -1,15 +1,16 @@
 package com.example.coursework.config;
 
-import com.example.coursework.oauth.OAuth2LoginSuccessHandler;
 import com.example.coursework.service.impl.AuthenticServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -19,8 +20,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticServiceImpl authenticService;
 
+
     @Autowired
-    private OAuth2LoginSuccessHandler successHandler;
+    private PasswordEncoder passwordEncoder;
+
+    @Bean
+    protected PasswordEncoder getPasswordEncoder(){
+        return new BCryptPasswordEncoder(12);
+    }
+
 
 
     @Override
@@ -37,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userInfoEndpoint()
                         .userService(authenticService)
                         .and()
-                        .successHandler(successHandler)
+//                        .successHandler(successHandler)
                 .and()
                     .logout().permitAll();
                 
@@ -47,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(authenticService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+                .passwordEncoder(passwordEncoder);
     }
 
 }

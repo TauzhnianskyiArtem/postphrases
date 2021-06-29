@@ -18,6 +18,10 @@ public class User {
     private Long id;
     private String username;
     private String password;
+
+    @Transient
+    private String password2;
+
     private boolean active;
     private String email;
     private String activationCode;
@@ -28,7 +32,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public boolean getAdmin(){
-        return roles.contains(Role.ADMIN);
-    }
 }

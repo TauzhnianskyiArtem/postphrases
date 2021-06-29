@@ -23,7 +23,10 @@ public class RegistrationController {
     public String addUser(
             User user,
             Model model) {
-
+        if (user.getPassword() != null && !user.getPassword().equals(user.getPassword2())) {
+            model.addAttribute("passwordError", "Passwords are different!");
+            return "registration";
+        }
         if (!userService.addUser(user)) {
             model.addAttribute("message", "User exists!");
             return "registration";

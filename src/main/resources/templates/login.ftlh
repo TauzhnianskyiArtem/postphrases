@@ -1,5 +1,3 @@
-<#import "parts/login.ftlh" as l>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,7 +12,13 @@
     <br><a href="/oauth2/authorization/google">Login with Google</a><br>
     <a href="/oauth2/authorization/github">Login with GitHub</a><br>
     ${message?ifExists!""}
-    <@l.login "/login" />
+    <form action="/login" method="post">
+        <div><label> User Name : <input type="text" name="username"/> </label></div>
+        <div><label> Password: <input type="password" name="password"/> </label></div>
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+
     <a href="/registration">Add new user</a>
 </body>
 </html>

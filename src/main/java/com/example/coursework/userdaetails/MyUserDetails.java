@@ -1,23 +1,24 @@
 package com.example.coursework.userdaetails;
 
+import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
+import com.example.coursework.repos.UserRepo;
 import com.example.coursework.service.interf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class MyUserDetails implements UserDetails, OAuth2User {
-    @Autowired
-    private UserService userService;
 
     private User user;
 
+
     public MyUserDetails(User user) {
-        this.user= user;
+        this.user = user;
     }
 
 
@@ -28,17 +29,17 @@ public class MyUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.user.getRoles();
+        return user.getRoles();
     }
 
     @Override
     public String getPassword() {
-        return this.user.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getUsername();
+        return user.getUsername();
     }
 
     @Override
@@ -67,10 +68,10 @@ public class MyUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return user.getUsername();
+        return  user.getUsername();
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return user.getEmail();
     }
 }

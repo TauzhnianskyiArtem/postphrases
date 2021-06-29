@@ -1,4 +1,4 @@
-<#import "parts/login.ftlh" as l>
+<#import "parts/logout.ftlh" as l>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"]/>
 
 <!doctype html>
