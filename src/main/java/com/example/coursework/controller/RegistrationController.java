@@ -24,7 +24,7 @@ public class RegistrationController {
             User user,
             Model model) {
         if (user.getPassword() != null && !user.getPassword().equals(user.getPassword2())) {
-            model.addAttribute("passwordError", "Passwords are different!");
+            model.addAttribute("message", "Passwords are different!");
             return "registration";
         }
         if (!userService.addUser(user)) {
