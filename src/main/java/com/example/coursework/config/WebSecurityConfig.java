@@ -45,7 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userInfoEndpoint()
                         .userService(authenticService)
                         .and()
-//                        .successHandler(successHandler)
                 .and()
                     .logout().permitAll();
                 
