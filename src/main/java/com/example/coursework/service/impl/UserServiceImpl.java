@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean addUser(User user) {
         Optional<User> userFromDb = userRepo.findByUsername(user.getUsername());
-
         if (userFromDb.isPresent()) {
             return false;
         }

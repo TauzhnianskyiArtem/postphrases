@@ -12,8 +12,7 @@
     <p>${message?ifExists!""}</p>
     <form action="/profile" method="post">
         <div><label> Email: <input type="email" name="email" value="${user.email}"/> </label></div>
-        <div><label> Password: <input type="password" name="password" value="${user.password}"/> </label></div>
-
+        <div><label>New password: <input type="password" name="password" /> </label></div>
         <input type="hidden" value="${user.id}" name="userId">
         <input type="hidden" value="${_csrf.token}" name="_csrf">
         <button type="submit">Save</button>
