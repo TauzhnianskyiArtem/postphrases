@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SendingService sendingService;
 
-    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 

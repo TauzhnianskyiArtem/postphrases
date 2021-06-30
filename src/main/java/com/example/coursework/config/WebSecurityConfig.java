@@ -20,15 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticServiceImpl authenticService;
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Bean
-    protected PasswordEncoder getPasswordEncoder(){
-        return new BCryptPasswordEncoder(12);
-    }
-
 
 
     @Override

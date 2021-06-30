@@ -26,7 +26,6 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
     @Autowired
     private UserService userService;
 
-    @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
 
