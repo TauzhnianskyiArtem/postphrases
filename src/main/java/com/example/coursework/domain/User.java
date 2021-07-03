@@ -3,15 +3,17 @@ package com.example.coursework.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "usr")
-@Data
-@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)

@@ -3,13 +3,17 @@ package com.example.coursework.service.impl;
 import com.example.coursework.domain.Message;
 import com.example.coursework.repos.MessageRepo;
 import com.example.coursework.service.interf.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service("MessageServiceImp")
 public class MessageServiceImpl implements MessageService {
-    @Autowired
-    private MessageRepo messageRepo;
+
+    MessageRepo messageRepo;
 
     @Override
     public Iterable<Message> selectAll() {

@@ -1,26 +1,23 @@
 package com.example.coursework.userdaetails;
 
-import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
-import com.example.coursework.repos.UserRepo;
-import com.example.coursework.service.interf.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
+@Data
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MyUserDetails implements UserDetails, OAuth2User {
 
-    private User user;
-
-
-    public MyUserDetails(User user) {
-        this.user = user;
-    }
-
+    User user;
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -60,10 +57,6 @@ public class MyUserDetails implements UserDetails, OAuth2User {
     @Override
     public boolean isEnabled() {
         return this.user.isActive();
-    }
-
-    public User getUser() {
-        return user;
     }
 
     @Override

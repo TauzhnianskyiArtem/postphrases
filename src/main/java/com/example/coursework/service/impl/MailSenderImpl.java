@@ -1,20 +1,24 @@
 package com.example.coursework.service.impl;
 
 import com.example.coursework.service.interf.MailSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
 public class MailSenderImpl implements MailSender {
-    @Autowired
-    private JavaMailSender mailSender;
+
+    JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
-    private String username;
+    @NonFinal String username;
 
     @Override
     public void send(String emailTo, String subject, String message) {

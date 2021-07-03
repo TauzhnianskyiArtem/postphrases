@@ -3,10 +3,12 @@ package com.example.coursework.controller;
 import com.example.coursework.domain.Message;
 import com.example.coursework.domain.User;
 import com.example.coursework.service.interf.MessageService;
-import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,16 +22,16 @@ import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Controller
 public class MainController {
-    @Autowired
-    private MessageService messageService;
 
-    @Autowired
-    private UserService userService;
+    MessageService messageService;
 
     @Value("${upload.path}")
-    private String uploadPath;
+    @NonFinal String uploadPath;
+
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -60,8 +62,7 @@ public class MainController {
             @AuthenticationPrincipal MyUserDetails userDetails,
             @RequestParam String text,
             @RequestParam String tag,
-            @RequestParam("file") MultipartFile file,
-            Model model
+            @RequestParam("file") MultipartFile file
     ) {
 
         User user = userDetails.getUser();

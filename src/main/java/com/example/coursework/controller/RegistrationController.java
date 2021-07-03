@@ -2,17 +2,21 @@ package com.example.coursework.controller;
 
 import com.example.coursework.domain.User;
 import com.example.coursework.service.interf.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Controller
 public class RegistrationController {
-    @Autowired
-    private UserService userService;
+
+    UserService userService;
 
     @GetMapping("/registration")
     public String registration() {

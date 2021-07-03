@@ -5,8 +5,9 @@ import com.example.coursework.domain.User;
 import com.example.coursework.repos.UserRepo;
 import com.example.coursework.service.interf.SendingService;
 import com.example.coursework.service.interf.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepo userRepo;
 
-    @Autowired
-    private SendingService sendingService;
+    UserRepo userRepo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    SendingService sendingService;
+
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<User> findByUsername(String username) {
@@ -47,7 +48,6 @@ public class UserServiceImpl implements UserService {
         if (userFromDb.isPresent()) {
             return false;
         }
-
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
@@ -78,20 +78,13 @@ public class UserServiceImpl implements UserService {
     public String updateProfile(User user, String password, String email) {
         String result = "";
 
-        boolean matches = passwordEncoder.matches(password, user.getPassword());
-
         String userEmail = user.getEmail();
-
-        if (email == null || email.isEmpty()){
-            return "Email is empty";
-        }
 
         if (password != null && !password.isEmpty()) {
             String encodePassword = passwordEncoder.encode(password);
             user.setPassword(encodePassword);
             result = "Password save. ";
         }
-
         if (!email.equals(userEmail)) {
             user.setEmail(email);
 

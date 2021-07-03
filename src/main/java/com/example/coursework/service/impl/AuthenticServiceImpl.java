@@ -5,8 +5,9 @@ import com.example.coursework.domain.User;
 import com.example.coursework.service.interf.AuthenticService;
 import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,14 +21,14 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
-
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Service
 public class AuthenticServiceImpl extends DefaultOAuth2UserService implements AuthenticService  {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    UserService userService;
+
+    PasswordEncoder passwordEncoder;
 
 
     @Override
