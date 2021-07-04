@@ -5,6 +5,7 @@ import com.example.coursework.service.interf.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +32,14 @@ public class RegistrationController {
             model.addAttribute("message", "Passwords are different!");
             return "registration";
         }
-        if (!userService.addUser(user)) {
-            model.addAttribute("message", "User exists!");
+        try {
+            userService.addUser(user);
+        } catch (BadCredentialsException e){
+            model.addAttribute("message", e.getMessage());
             return "registration";
         }
+//
+
 
         return "redirect:/login";
     }

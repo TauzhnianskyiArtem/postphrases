@@ -1,7 +1,6 @@
 package com.example.coursework.service.interf;
 
 import com.example.coursework.domain.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Optional;

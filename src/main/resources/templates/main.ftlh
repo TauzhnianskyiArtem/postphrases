@@ -15,7 +15,7 @@
     <@l.logout />
     <h3>Hello, <@security.authentication property="principal.username"/></h3>
 
-    <@security.authorize access="hasAnyAuthority('ADMIN')">
+    <@security.authorize access="hasAuthority('ADMIN')">
         <span><a href="/user">User list</a></span><br>
     </@security.authorize>
     <span><a href="/profile">My Profile</a></span>

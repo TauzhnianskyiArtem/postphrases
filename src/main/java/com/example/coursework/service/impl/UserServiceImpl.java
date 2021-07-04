@@ -8,6 +8,7 @@ import com.example.coursework.service.interf.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +45,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        Optional<User> userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb.isPresent()) {
-            return false;
-        }
+        Optional<User> userByUsername = userRepo.findByUsername(user.getUsername());
+        Optional<User> userByEmail = userRepo.findByEmail(user.getEmail());
+        if (userByUsername.isPresent())
+            throw new BadCredentialsException("Username already exists");
+
+        if (userByEmail.isPresent())
+            throw new BadCredentialsException("Email already exists");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
