@@ -30,7 +30,8 @@ public class MainController {
     MessageService messageService;
 
     @Value("${upload.path}")
-    @NonFinal String uploadPath;
+    @NonFinal
+    String uploadPath;
 
 
     @GetMapping("/")
@@ -41,15 +42,12 @@ public class MainController {
     @GetMapping("/main")
     public String main(
             @AuthenticationPrincipal MyUserDetails userDetails,
-            @RequestParam(required = false) String filter,
+            @RequestParam(required = false, defaultValue = "") String filter,
             Model model) {
-
         User user = userDetails.getUser();
+        boolean isFiltered = !filter.trim().isEmpty();
 
-        Iterable<Message> messages = messageService.selectAll();
-        if (filter != null && !filter.isEmpty()) {
-            messages = messageService.findByTag(filter);
-        }
+        Iterable<Message> messages = messageService.findAllByFilter(isFiltered, filter);
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
         model.addAttribute("user", user);
@@ -66,7 +64,12 @@ public class MainController {
     ) {
 
         User user = userDetails.getUser();
-        Message message = new Message(text, tag, user);
+
+        Message message = Message.builder()
+                .text(text)
+                .author(user)
+                .tag(tag)
+                .build();
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);

@@ -1,13 +1,17 @@
 package com.example.coursework.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 public class Message {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,12 +25,6 @@ public class Message {
     private User author;
 
     private String fileName;
-
-    public Message(String text, String tag, User author) {
-        this.text = text;
-        this.tag = tag;
-        this.author = author;
-    }
 
     public String getAuthorName(){
         return this.author.getUsername();

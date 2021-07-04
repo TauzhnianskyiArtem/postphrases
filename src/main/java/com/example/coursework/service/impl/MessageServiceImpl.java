@@ -16,17 +16,12 @@ public class MessageServiceImpl implements MessageService {
     MessageRepo messageRepo;
 
     @Override
-    public Iterable<Message> selectAll() {
-        return messageRepo.findAll();
-    }
-
-    @Override
-    public Iterable<Message> findByTag(String filter) {
-        return messageRepo.findByTag(filter);
-    }
-
-    @Override
     public void save(Message message) {
         messageRepo.save(message);
+    }
+
+    @Override
+    public Iterable<Message> findAllByFilter(boolean isFiltered, String filter) {
+        return messageRepo.findAllByFilter(isFiltered, filter);
     }
 }
