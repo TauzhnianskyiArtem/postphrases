@@ -65,27 +65,7 @@ public class MainController {
 
         User user = userDetails.getUser();
 
-        Message message = Message.builder()
-                .text(text)
-                .author(user)
-                .tag(tag)
-                .build();
-
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-            message.setFileName(resultFilename);
-        }
-        messageService.save(message);
+        messageService.addMessage(user, text, tag, file);
 
         return "redirect:/main";
     }
