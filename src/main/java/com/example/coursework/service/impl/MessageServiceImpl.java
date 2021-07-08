@@ -2,7 +2,7 @@ package com.example.coursework.service.impl;
 
 import com.example.coursework.domain.Message;
 import com.example.coursework.domain.User;
-import com.example.coursework.repos.MessageRepo;
+import com.example.coursework.repository.MessageRepository;
 import com.example.coursework.service.interf.MessageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service("MessageServiceImp")
 public class MessageServiceImpl implements MessageService {
 
-    MessageRepo messageRepo;
+    MessageRepository messageRepository;
 
     @Value("${upload.path}")
     @NonFinal
@@ -29,12 +29,12 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void save(Message message) {
-        messageRepo.save(message);
+        messageRepository.save(message);
     }
 
     @Override
     public Iterable<Message> findAllByFilter(boolean isFiltered, String filter) {
-        return messageRepo.findAllByFilter(isFiltered, filter);
+        return messageRepository.findAllByFilter(isFiltered, filter);
     }
 
     @SneakyThrows
@@ -59,6 +59,6 @@ public class MessageServiceImpl implements MessageService {
 
             message.setFileName(resultFilename);
         }
-        messageRepo.save(message);
+        messageRepository.save(message);
     }
 }

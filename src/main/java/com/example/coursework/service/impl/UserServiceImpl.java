@@ -2,7 +2,7 @@ package com.example.coursework.service.impl;
 
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
-import com.example.coursework.repos.UserRepo;
+import com.example.coursework.repository.UserRepository;
 import com.example.coursework.service.interf.SendingService;
 import com.example.coursework.service.interf.UserService;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepo userRepo;
+    UserRepository userRepository;
 
     SendingService sendingService;
 
@@ -30,34 +30,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return userRepo.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public List<User> findAll() {
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     public void save(User user) {
-        userRepo.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
     public boolean addUser(User user) {
-        Optional<User> userByUsername = userRepo.findByUsername(user.getUsername());
-        Optional<User> userByEmail = userRepo.findByEmail(user.getEmail());
-        if (userByUsername.isPresent())
-            throw new BadCredentialsException("Username already exists");
+        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
+        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
 
         if (userByEmail.isPresent())
             throw new BadCredentialsException("Email already exists");
+
+        if (userByUsername.isPresent())
+            throw new BadCredentialsException("Username already exists");
+
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        userRepo.save(user);
+        userRepository.save(user);
 
         sendingService.sendMessage(user);
 
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean activateUser(String code) {
-        User user = userRepo.findByActivationCode(code);
+        User user = userRepository.findByActivationCode(code);
 
         if (user == null) {
             return false;
@@ -74,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
         user.setActivationCode(null);
 
-        userRepo.save(user);
+        userRepository.save(user);
 
         return true;
     }
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService {
             result += "Email save. Activation code sent to the email";
 
         }
-        userRepo.save(user);
+        userRepository.save(user);
 
 
         return result;
@@ -106,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return userRepo.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
 }

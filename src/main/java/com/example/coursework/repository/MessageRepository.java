@@ -1,10 +1,10 @@
-package com.example.coursework.repos;
+package com.example.coursework.repository;
 
 import com.example.coursework.domain.Message;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface MessageRepo extends CrudRepository<Message, Integer> {
+public interface MessageRepository extends CrudRepository<Message, Integer> {
 
     @Query("SELECT m FROM Message m " +
             "WHERE :isFiltered = FALSE " +

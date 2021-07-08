@@ -1,30 +1,29 @@
 package com.example.coursework.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 @Entity
 public class Message {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    Integer id;
 
-    private String text;
-    private String tag;
+    String text;
+    String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    User author;
 
-    private String fileName;
+    String fileName;
 
     public String getAuthorName(){
         return this.author.getUsername();

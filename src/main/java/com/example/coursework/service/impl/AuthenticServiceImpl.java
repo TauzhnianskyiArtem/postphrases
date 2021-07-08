@@ -33,9 +33,10 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userService.findByUsername(username);
-        user.orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        return user.map(MyUserDetails::new).get();
+        User user = userService
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        return new MyUserDetails(user);
     }
 
     @Override
@@ -46,13 +47,14 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
         if (!userByDB.isPresent()) {
 
             String username = auth2User.getAttribute("name");
+            User user = User.builder()
+                    .username(username)
+                    .email(email)
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+                    .roles(Collections.singleton(Role.USER))
+                    .active(true)
+                    .build();
 
-            User user = new User();
-            user.setUsername(username);
-            user.setEmail(email);
-            user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-            user.setActive(true);
-            user.setRoles(Collections.singleton(Role.USER));
             userService.save(user);
             return new MyUserDetails(user);
         }

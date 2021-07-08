@@ -36,7 +36,9 @@ public class MainController {
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
+
         return "greeting";
+
     }
 
     @GetMapping("/main")

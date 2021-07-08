@@ -9,7 +9,9 @@
 </head>
 <body>
     Add new user
-    ${message?ifExists!""}
+    <#if message??>
+        <h3>${message}</h3>
+    </#if>
     <form action="/registration" method="post">
         <div><label> Email: <input type="email" name="email"/> </label></div>
         <div><label> User Name : <input type="text" name="username"/> </label></div>

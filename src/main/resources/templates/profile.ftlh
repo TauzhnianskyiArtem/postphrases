@@ -9,7 +9,9 @@
 </head>
 <body>
     My Profile
-    <p>${message?ifExists!""}</p>
+    <#if message??>
+        <h3>${message}</h3>
+    </#if>
     <form action="/profile" method="post">
         <div><label> Email: <input type="email" name="email" value="${user.email}"/> </label></div>
         <div><label>New password: <input type="password" name="password" /> </label></div>
