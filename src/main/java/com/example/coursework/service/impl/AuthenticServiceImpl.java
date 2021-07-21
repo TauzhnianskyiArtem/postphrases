@@ -2,6 +2,7 @@ package com.example.coursework.service.impl;
 
 import com.example.coursework.domain.Role;
 import com.example.coursework.domain.User;
+import com.example.coursework.exception.NotActivationEmailException;
 import com.example.coursework.service.interf.AuthenticService;
 import com.example.coursework.service.interf.UserService;
 import com.example.coursework.userdaetails.MyUserDetails;
@@ -18,7 +19,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -36,6 +36,10 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
         User user = userService
                 .findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        if(user.getActivationCode() != null) {
+            throw new NotActivationEmailException("Not activation email");
+        }
         return new MyUserDetails(user);
     }
 
@@ -43,11 +47,9 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User auth2User =  super.loadUser(userRequest);
         String email = auth2User.getAttribute("email");
-        Optional<User> userByDB = userService.findByEmail(email);
-        if (!userByDB.isPresent()) {
-
+        User user = userService.findByEmail(email).orElseGet(() -> {
             String username = auth2User.getAttribute("name");
-            User user = User.builder()
+            User newUser = User.builder()
                     .username(username)
                     .email(email)
                     .password(passwordEncoder.encode(UUID.randomUUID().toString()))
@@ -55,11 +57,11 @@ public class AuthenticServiceImpl extends DefaultOAuth2UserService implements Au
                     .active(true)
                     .build();
 
-            userService.save(user);
-            return new MyUserDetails(user);
-        }
+            userService.save(newUser);
+            return newUser;
+        });
 
-        return userByDB.map(MyUserDetails::new).get();
+        return new MyUserDetails(user);
 
     }
 
