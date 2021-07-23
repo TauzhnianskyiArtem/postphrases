@@ -1,6 +1,5 @@
 package com.example.coursework.exception;
 
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class NotActivationEmailException extends UsernameNotFoundException {
