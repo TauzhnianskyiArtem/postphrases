@@ -23,5 +23,6 @@
     </form>
 
     <a href="/registration">Add new user</a>
+    <a href="/restore">Forget password</a>
 </body>
 </html>

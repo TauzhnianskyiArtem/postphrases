@@ -18,16 +18,10 @@ public class SendingServiceImpl implements SendingService {
     MailSender mailSender;
 
     @Override
-    public void sendMessage(User user) {
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to Postphrases. Please, visit next link: http://localhost:8080/activate/%s",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
+    public void sendMessage(User user, String message, String  subject) {
+        if (!user.getEmail().isEmpty()) {
 
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailSender.send(user.getEmail(), subject, message);
         }
     }
 }

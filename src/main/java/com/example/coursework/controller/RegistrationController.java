@@ -38,7 +38,7 @@ public class RegistrationController {
             model.addAttribute("message", e.getMessage());
             return "registration";
         }
-//
+
 
 
         return "redirect:/login";

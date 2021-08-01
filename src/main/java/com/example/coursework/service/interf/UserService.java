@@ -19,4 +19,8 @@ public interface UserService {
     String updateProfile(User user, String password, String email);
 
     Optional<User> findByEmail(String email);
+
+    void restoreByEmail(String email);
+
+    void changePassword(String password, String code);
 }

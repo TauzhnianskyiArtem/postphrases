@@ -61,7 +61,13 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        sendingService.sendMessage(user);
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to Postphrases. Please, visit next link: http://localhost:8080/activate/%s",
+                user.getUsername(),
+                user.getActivationCode()
+        );
+        sendingService.sendMessage(user, message, "Activation code");
 
         return true;
     }
@@ -95,7 +101,13 @@ public class UserServiceImpl implements UserService {
             user.setEmail(email);
 
             user.setActivationCode(UUID.randomUUID().toString());
-            sendingService.sendMessage(user);
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to Postphrases. Please, visit next link: http://localhost:8080/activate/%s",
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+            sendingService.sendMessage(user, message, "Activation code");
 
             result += "Email save. Activation code sent to the email";
 
@@ -109,6 +121,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void restoreByEmail(String email) {
+        User user = userRepository.findByEmail(email).
+                orElseThrow(() -> new BadCredentialsException("Email don`t exists"));
+
+        user.setRestoreCode(UUID.randomUUID().toString());
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to Postphrases. For restore Password, visit next link: http://localhost:8080/restore/password/%s",
+                user.getUsername(),
+                user.getRestoreCode()
+        );
+        sendingService.sendMessage(user, message, "Change password");
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePassword(String password, String code) {
+        User user = userRepository.findByRestoreCode(code)
+                .orElseThrow(() -> new BadCredentialsException("Not found user"));
+
+        if (password.isEmpty())
+            throw new BadCredentialsException("Empty password");
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRestoreCode(null);
+        userRepository.save(user);
     }
 
 }

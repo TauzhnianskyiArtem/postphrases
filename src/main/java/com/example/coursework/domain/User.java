@@ -30,6 +30,7 @@ public class User {
     boolean active;
     String email;
     String activationCode;
+    String restoreCode;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
