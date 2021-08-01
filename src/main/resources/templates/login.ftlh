@@ -22,7 +22,7 @@
         <div><input type="submit" value="Sign In"/></div>
     </form>
 
-    <a href="/registration">Add new user</a>
+    <a href="/registration">Add new user</a><br>
     <a href="/restore">Forget password</a>
 </body>
 </html>
