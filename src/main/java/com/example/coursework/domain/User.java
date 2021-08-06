@@ -5,8 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 
@@ -17,7 +16,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "usr")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
@@ -37,8 +36,5 @@ public class User {
     @CollectionTable( name = "user_role", joinColumns = @JoinColumn( name = "user_id"))
     @Enumerated(EnumType.STRING)
     Set<Role> roles;
-
-    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
-    List<Message> messages;
 
 }

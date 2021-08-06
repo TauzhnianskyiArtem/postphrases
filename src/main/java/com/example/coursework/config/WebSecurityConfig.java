@@ -39,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(authenticService)
                         .and()
                 .and()
+                    .rememberMe()
+                .and()
                     .logout().permitAll();
                 
     }
